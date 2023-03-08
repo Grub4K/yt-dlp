@@ -10,18 +10,20 @@ except ImportError:
         __bool__ = lambda: False
 
 __version__ = ''
-AES = PKCS1_v1_5 = Blowfish = PKCS1_OAEP = SHA1 = CMAC = RSA = None
+AES = PKCS1_v1_5 = Blowfish = PKCS1_OAEP = SHA1 = CMAC = RSA = SHA512 = pkcs1_15 = None
 try:
     if _parent.__name__ == 'Cryptodome':
         from Cryptodome import __version__
         from Cryptodome.Cipher import AES, PKCS1_OAEP, Blowfish, PKCS1_v1_5
-        from Cryptodome.Hash import CMAC, SHA1
+        from Cryptodome.Hash import CMAC, SHA1, SHA512
         from Cryptodome.PublicKey import RSA
+        from Cryptodome.Signature import pkcs1_15
     elif _parent.__name__ == 'Crypto':
         from Crypto import __version__
         from Crypto.Cipher import AES, PKCS1_OAEP, Blowfish, PKCS1_v1_5  # noqa: F401
-        from Crypto.Hash import CMAC, SHA1  # noqa: F401
+        from Crypto.Hash import CMAC, SHA1, SHA512  # noqa: F401
         from Crypto.PublicKey import RSA  # noqa: F401
+        from Crypto.Signature import pkcs1_15  # noqa: F401
 except ImportError:
     __version__ = f'broken {__version__}'.strip()
 

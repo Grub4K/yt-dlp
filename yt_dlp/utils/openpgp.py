@@ -3,9 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from io import BytesIO
 
-from Cryptodome.Hash import SHA512
-from Cryptodome.PublicKey import RSA
-from Cryptodome.Signature import pkcs1_15
+from ..dependencies import Cryptodome
 
 # Ref: https://datatracker.ietf.org/doc/html/rfc4880
 # Ref: https://datatracker.ietf.org/doc/html/rfc4880#section-4.3
@@ -92,7 +90,7 @@ def parse_public_key_packet(data):
 
     n = _read_mpi(stream)
     e = _read_mpi(stream)
-    key = RSA.construct((int.from_bytes(n, 'big'), int.from_bytes(e, 'big')))
+    key = Cryptodome.RSA.construct((int.from_bytes(n, 'big'), int.from_bytes(e, 'big')))
     return PublicKey(key, f'RSA @ {created_at.strftime("%Y-%m-%d %H:%M:%S")}')
 
 
@@ -119,7 +117,7 @@ def parse_signature_packet(data):
 
     trailer = header + hashed_data
     return Signature(
-        SHA512, f'SHA512 (type=0x{sig_type:02X})',
+        Cryptodome.SHA512, f'SHA512 (type=0x{sig_type:02X})',
         trailer + b'\x04\xFF' + len(trailer).to_bytes(4, 'big'),
         integrity, signature, key_id)
 
@@ -157,7 +155,7 @@ def verify(data, signature, key):
         return False
 
     try:
-        pkcs1_15.new(key.key).verify(message_hash, signature.data)
+        Cryptodome.pkcs1_15.new(key.key).verify(message_hash, signature.data)
         return True
     except ValueError:
         return False
