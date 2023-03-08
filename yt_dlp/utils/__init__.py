@@ -47,16 +47,16 @@ import urllib.request
 import xml.etree.ElementTree
 import zlib
 
-from .compat import functools  # isort: split
-from .compat import (
+from ..compat import functools  # isort: split
+from ..compat import (
     compat_etree_fromstring,
     compat_expanduser,
     compat_HTMLParseError,
     compat_os_name,
     compat_shlex_quote,
 )
-from .dependencies import brotli, certifi, websockets, xattr
-from .socks import ProxyType, sockssocket
+from ..dependencies import brotli, certifi, websockets, xattr
+from ..socks import ProxyType, sockssocket
 
 
 def register_socks_protocols():
@@ -1068,7 +1068,7 @@ def make_HTTPS_handler(params, **kwargs):
 
 
 def bug_reports_message(before=';'):
-    from .update import REPOSITORY
+    from ..update import REPOSITORY
 
     msg = (f'please report this issue on  https://github.com/{REPOSITORY}/issues?q= , '
            'filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U')
@@ -2076,7 +2076,7 @@ def write_string(s, out=None, encoding=None):
 
 
 def deprecation_warning(msg, *, printer=None, stacklevel=0, **kwargs):
-    from . import _IN_CLI
+    from .. import _IN_CLI
     if _IN_CLI:
         if msg in deprecation_warning._cache:
             return
@@ -3514,7 +3514,7 @@ def is_outdated_version(version, limit, assume_new=True):
 def ytdl_is_updateable():
     """ Returns if yt-dlp can be updated with -U """
 
-    from .update import is_non_updateable
+    from ..update import is_non_updateable
 
     return not is_non_updateable()
 
@@ -5428,7 +5428,7 @@ def make_dir(path, to_screen=None):
 
 
 def get_executable_path():
-    from .update import _get_variant_and_executable_path
+    from ..update import _get_variant_and_executable_path
 
     return os.path.dirname(os.path.abspath(_get_variant_and_executable_path()[1]))
 
@@ -6503,7 +6503,7 @@ has_websockets = bool(websockets)
 
 
 def load_plugins(name, suffix, namespace):
-    from .plugins import load_plugins
+    from ..plugins import load_plugins
     ret = load_plugins(name, suffix)
     namespace.update(ret)
     return ret
