@@ -12,10 +12,12 @@ from zipimport import zipimporter
 
 from .compat import functools  # isort: split
 from .compat import compat_realpath, compat_shlex_quote
+from .dependencies import Cryptodome
 from .utils import (
     Popen,
     cached_method,
     deprecation_warning,
+    openpgp,
     remove_end,
     remove_start,
     sanitized_Request,
@@ -233,9 +235,52 @@ class Updater:
         return f'yt-dlp{_FILE_SUFFIXES[detect_variant()]}'
 
     @functools.cached_property
+    def checksums(self):
+        return self._download('SHA2-256SUMS', self._tag)
+
+    @functools.cached_property
+    def _public_key_message(self):
+        response = self._get_version_info(self._tag)
+        commit = response['target_commitish']
+        if commit == 'master':
+            mobj = re.match(r'Generated from: https://github\.com/[\w-]+/[\w-]+/commit/([\da-f]+)', response['body'])
+            if not mobj:
+                self.ydl.report_warning(
+                    'Could not determine commit hash, skipping signature verification')
+                return None
+            commit = mobj.group(1)
+        url = f'https://github.com/{REPOSITORY}/raw/{commit}/public.key'
+        self.ydl.write_debug(f'Downloading public key from {url}')
+        try:
+            return self.ydl.urlopen(url).read()
+        except Exception:
+            self.ydl.report_warning(
+                'The target release was not signed, skipping signature verification')
+            return None
+
+    def verify_signature(self):
+        if not Cryptodome.RSA:
+            self.ydl.report_warning('Cryptodome is not installed, skipping signature verification')
+            return True
+        if not self._public_key_message:
+            return True
+        try:
+            signature_message = self._download('SHA2-256SUMS.sig', self._tag)
+        except Exception:
+            self.ydl.report_warning('The target release was not signed, skipping verification')
+            return True
+
+        public_key = openpgp.rsa_key_from_message(self._public_key_message)
+        signature = openpgp.signature_from_message(signature_message)
+        self.ydl.to_screen('Verifying signature...')
+        self.ydl.write_debug(f'Public key ({signature.key_id}): {public_key.description}')
+
+        return openpgp.verify(self.checksums, signature, public_key)
+
+    @functools.cached_property
     def release_hash(self):
         """Hash of the latest release"""
-        hash_data = dict(ln.split()[::-1] for ln in self._download('SHA2-256SUMS', self._tag).decode().splitlines())
+        hash_data = dict(ln.split()[::-1] for ln in self.checksums.decode().splitlines())
         return hash_data[self.release_name]
 
     def _report_error(self, msg, expected=False):
@@ -314,6 +359,8 @@ class Updater:
         except Exception:
             self.ydl.report_warning('no hash information found for the release')
         else:
+            if not self.verify_signature():
+                return self._report_network_error('verify the release signature')
             if hashlib.sha256(newcontent).hexdigest() != expected_hash:
                 return self._report_network_error('verify the new executable')
 
