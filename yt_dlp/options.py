@@ -212,6 +212,14 @@ class _YoutubeDLOptionParser(optparse.OptionParser):
                 return e.possibilities[0]
             raise
 
+    def get_prog_name(self):
+        if self.prog is None:
+            if sys.argv[0] is None:  # Workaround pyoxidizer
+                return "yt-dlp"
+            return os.path.basename(sys.argv[0])
+        else:
+            return self.prog
+
 
 def create_parser():
     def _list_from_options_callback(option, opt_str, value, parser, append=True, delim=',', process=str.strip):

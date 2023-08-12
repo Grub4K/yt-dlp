@@ -57,7 +57,7 @@ def _get_variant_and_executable_path():
                 machine = '_x86' if platform.architecture()[0][:2] == '32' else ''
         return f'{remove_end(sys.platform, "32")}{machine}_exe', path
 
-    path = os.path.dirname(__file__)
+    path = os.path.dirname(globals().get('__file__', sys.executable))
     if isinstance(__loader__, zipimporter):
         return 'zip', os.path.join(path, '..')
     elif (os.path.basename(sys.argv[0]) in ('__main__.py', '-m')
