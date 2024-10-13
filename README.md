@@ -173,7 +173,7 @@ python3 -m pip install -U --pre "yt-dlp[default]"
 ```
 
 ## DEPENDENCIES
-Python versions 3.8+ (CPython and PyPy) are supported. Other versions and implementations may or may not work correctly.
+Python versions 3.8+ (CPython) and 3.10+ (PyPy) are supported. Other versions and implementations may or may not work correctly.
 
 <!-- Python 3.5+ uses VC++14 and it is already embedded in the binary created
 <!x-- https://www.microsoft.com/en-us/download/details.aspx?id=26999 --x>
@@ -278,7 +278,7 @@ py -m bundle.py2exe
 * **`devscripts/update-version.py`** - Update the version number based on the current date.
 * **`devscripts/set-variant.py`** - Set the build variant of the executable.
 * **`devscripts/make_changelog.py`** - Create a markdown changelog using short commit messages and update `CONTRIBUTORS` file.
-* **`devscripts/make_lazy_extractors.py`** - Create lazy extractors. Running this before building the binaries (any variant) will improve their startup performance. Set the environment variable `YTDLP_NO_LAZY_EXTRACTORS=1` if you wish to forcefully disable lazy extractor loading.
+* **`devscripts/make_lazy_extractors.py`** - Create lazy extractors. Running this before building the binaries (any variant) will improve their startup performance. Set the environment variable `YTDLP_NO_LAZY_EXTRACTORS` to something nonempty to forcefully disable lazy extractor loading.
 
 Note: See their `--help` for more info.
 
@@ -1795,6 +1795,7 @@ The following extractors use this feature:
 * `key_query`: Passthrough the master m3u8 URL query to its HLS AES-128 decryption key URI if no value is provided, or else apply the query string given as `key_query=VALUE`. Note that this will have no effect if the key URI is provided via the `hls_key` extractor-arg. Does not apply to ffmpeg
 * `hls_key`: An HLS AES-128 key URI *or* key (as hex), and optionally the IV (as hex), in the form of `(URI|KEY)[,IV]`; e.g. `generic:hls_key=ABCDEF1234567980,0xFEDCBA0987654321`. Passing any of these values will force usage of the native HLS downloader and override the corresponding values found in the m3u8 playlist
 * `is_live`: Bypass live HLS detection and manually set `live_status` - a value of `false` will set `not_live`, any other value (or no value) will set `is_live`
+* `impersonate`: Target(s) to try and impersonate with the initial webpage request; e.g. `safari,chrome-110`. By default any available target will be used. Use `false` to disable impersonation
 
 #### funimation
 * `language`: Audio languages to extract, e.g. `funimation:language=english,japanese`
@@ -1897,6 +1898,7 @@ In other words, the file structure on the disk looks something like:
                 myplugin.py
 
 yt-dlp looks for these `yt_dlp_plugins` namespace folders in many locations (see below) and loads in plugins from **all** of them.
+Set the environment variable `YTDLP_NO_PLUGINS` to something nonempty to disable loading plugins entirely.
 
 See the [wiki for some known plugins](https://github.com/yt-dlp/yt-dlp/wiki/Plugins)
 
@@ -2202,7 +2204,7 @@ Features marked with a **\*** have been back-ported to youtube-dl
 
 Some of yt-dlp's default options are different from that of youtube-dl and youtube-dlc:
 
-* yt-dlp supports only [Python 3.8+](## "Windows 7"), and *may* remove support for more versions as they [become EOL](https://devguide.python.org/versions/#python-release-cycle); while [youtube-dl still supports Python 2.6+ and 3.2+](https://github.com/ytdl-org/youtube-dl/issues/30568#issue-1118238743)
+* yt-dlp supports only [Python 3.8+](## "Windows 7"), and will remove support for more versions as they [become EOL](https://devguide.python.org/versions/#python-release-cycle); while [youtube-dl still supports Python 2.6+ and 3.2+](https://github.com/ytdl-org/youtube-dl/issues/30568#issue-1118238743)
 * The options `--auto-number` (`-A`), `--title` (`-t`) and `--literal` (`-l`), no longer work. See [removed options](#Removed) for details
 * `avconv` is not supported as an alternative to `ffmpeg`
 * yt-dlp stores config files in slightly different locations to youtube-dl. See [CONFIGURATION](#configuration) for a list of correct locations
@@ -2278,8 +2280,8 @@ While these options are redundant, they are still expected to be used due to the
     --min-views COUNT                --match-filters "view_count >=? COUNT"
     --max-views COUNT                --match-filters "view_count <=? COUNT"
     --break-on-reject                Use --break-match-filters
-    --user-agent UA                  --add-header "User-Agent:UA"
-    --referer URL                    --add-header "Referer:URL"
+    --user-agent UA                  --add-headers "User-Agent:UA"
+    --referer URL                    --add-headers "Referer:URL"
     --playlist-start NUMBER          -I NUMBER:
     --playlist-end NUMBER            -I :NUMBER
     --playlist-reverse               -I ::-1
