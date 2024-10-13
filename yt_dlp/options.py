@@ -1245,7 +1245,7 @@ def create_parser():
     verbosity.add_option(
         '--console-title',
         action='store_true', dest='consoletitle', default=False,
-        help='Display progress in the console window\'s titlebar.')
+        help='Display progress in console titlebar.')
     verbosity.add_option(
         '--progress-template',
         metavar='[TYPES:]TEMPLATE', dest='progress_template', default={}, type='str',
@@ -1784,7 +1784,7 @@ def create_parser():
             'It can be one of "pre_process" (after video extraction), "after_filter" (after video passes filter), '
             '"video" (after --format; before --print/--output), "before_dl" (before each video download), '
             '"post_process" (after each video download; default), '
-            '"after_move" (after moving the video file to its final locations), '
+            '"after_move" (after moving the video file to its final location), '
             '"after_video" (after downloading and processing all formats of a video), '
             'or "playlist" (at end of playlist). '
             'This option can be used multiple times to add different postprocessors'))
