@@ -732,10 +732,10 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
                                     used. This option can be used multiple times
     --print-to-file [WHEN:]TEMPLATE FILE
                                     Append given template to the file. The
-                                    values of WHEN and TEMPLATE are the same as that
-                                    of --print. FILE uses the same syntax as the
-                                    output template. This option can be used
-                                    multiple times
+                                    values of WHEN and TEMPLATE are the same as
+                                    that of --print. FILE uses the same syntax
+                                    as the output template. This option can be
+                                    used multiple times
     -j, --dump-json                 Quiet, but print JSON information for each
                                     video. Simulate unless --no-simulate is
                                     used. See "OUTPUT TEMPLATE" for a
@@ -752,7 +752,7 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
     --newline                       Output progress bar as new lines
     --no-progress                   Do not print progress bar
     --progress                      Show progress bar, even if in quiet mode
-    --console-title                 Display progress in the console window's titlebar.
+    --console-title                 Display progress in console titlebar.
     --progress-template [TYPES:]TEMPLATE
                                     Template for progress outputs, optionally
                                     prefixed with one of "download:" (default),
@@ -816,9 +816,9 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
     --no-audio-multistreams         Only one audio stream is downloaded for each
                                     output file (default)
     --prefer-free-formats           Prefer video formats with free containers
-                                    over non-free ones of the same quality. Use with
-                                    "-S ext" to strictly prefer free containers
-                                    irrespective of quality
+                                    over non-free ones of the same quality. Use
+                                    with "-S ext" to strictly prefer free
+                                    containers irrespective of quality
     --no-prefer-free-formats        Don't give any special preference to free
                                     containers (default)
     --check-formats                 Make sure formats are selected only from
@@ -899,9 +899,9 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
                                     necessary (currently supported: avi, flv,
                                     gif, mkv, mov, mp4, webm, aac, aiff, alac,
                                     flac, m4a, mka, mp3, ogg, opus, vorbis,
-                                    wav). If the target container does not support
-                                    the video/audio codec, remuxing will fail.
-                                    You can specify multiple rules; e.g.
+                                    wav). If the target container does not
+                                    support the video/audio codec, remuxing will
+                                    fail. You can specify multiple rules; e.g.
                                     "aac>m4a/mov>mp4/mkv" will remux aac to m4a,
                                     mov to mp4 and anything else to mkv
     --recode-video FORMAT           Re-encode the video into another format if
@@ -973,8 +973,8 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
     --concat-playlist POLICY        Concatenate videos in a playlist. One of
                                     "never", "always", or "multi_video"
                                     (default; only when the videos form a single
-                                    show). All the video files must have the same
-                                    codecs and number of streams to be
+                                    show). All the video files must have the
+                                    same codecs and number of streams to be
                                     concatenable. The "pl_video:" prefix can be
                                     used with "--paths" and "--output" to set
                                     the output filename for the concatenated
@@ -983,8 +983,8 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
                                     file. One of never (do nothing), warn (only
                                     emit a warning), detect_or_warn (the
                                     default; fix the file if we can, warn
-                                    otherwise), force (try fixing even if the file
-                                    already exists)
+                                    otherwise), force (try fixing even if the
+                                    file already exists)
     --ffmpeg-location PATH          Location of the ffmpeg binary; either the
                                     path to the binary or its containing directory
     --exec [WHEN:]CMD               Execute a command, optionally prefixed with
@@ -1043,7 +1043,7 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
                                     video download), "post_process" (after each
                                     video download; default), "after_move"
                                     (after moving the video file to its final
-                                    locations), "after_video" (after downloading
+                                    location), "after_video" (after downloading
                                     and processing all formats of a video), or
                                     "playlist" (at end of playlist). This option
                                     can be used multiple times to add different
