@@ -1245,7 +1245,7 @@ def create_parser():
     verbosity.add_option(
         '--console-title',
         action='store_true', dest='consoletitle', default=False,
-        help='Display progress in console titlebar.')
+        help='Display progress in console titlebar')
     verbosity.add_option(
         '--progress-template',
         metavar='[TYPES:]TEMPLATE', dest='progress_template', default={}, type='str',

@@ -752,7 +752,7 @@ If you fork the project on GitHub, you can run your fork's [build workflow](.git
     --newline                       Output progress bar as new lines
     --no-progress                   Do not print progress bar
     --progress                      Show progress bar, even if in quiet mode
-    --console-title                 Display progress in console titlebar.
+    --console-title                 Display progress in console titlebar
     --progress-template [TYPES:]TEMPLATE
                                     Template for progress outputs, optionally
                                     prefixed with one of "download:" (default),
